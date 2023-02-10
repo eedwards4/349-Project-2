@@ -1,0 +1,3 @@
+C:\Users\evane\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\223.8617.54\bin\cmake\win\x64\bin\cmake.exe -E rm -f CMakeFiles\349_Project_2.dir/objects.a
+C:\Users\evane\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\223.8617.54\bin\mingw\bin\ar.exe qc CMakeFiles\349_Project_2.dir/objects.a @CMakeFiles\349_Project_2.dir\objects1.rsp
+C:\Users\evane\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\223.8617.54\bin\mingw\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\349_Project_2.dir/objects.a -Wl,--no-whole-archive -o 349_Project_2.exe -Wl,--out-implib,lib349_Project_2.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\349_Project_2.dir\linklibs.rsp
