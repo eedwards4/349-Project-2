@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/evane/Documents/CPPprojects/349-Project-2/main.cpp" "CMakeFiles/349_Project_2.dir/main.cpp.obj" "gcc" "CMakeFiles/349_Project_2.dir/main.cpp.obj.d"
+  "C:/Users/Joe/Documents/SSU/Classes/CS349/349-Project-2/main.cpp" "CMakeFiles/349_Project_2.dir/main.cpp.obj" "gcc" "CMakeFiles/349_Project_2.dir/main.cpp.obj.d"
   )
 
 # Targets to which this target links.
