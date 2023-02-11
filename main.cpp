@@ -43,13 +43,13 @@ std::string calcTimeDiff(int sp1, int sp2, int dist){
     float hours, min, sec;
     std::string result;
 
-    if (dist == 0) { //return 0 if there is no distance travelled, avoid NaN output
+    if (sp1 == 0 || sp2 == 0) { //return 0 if either speed is 0, avoid NaN output
         hours = min = sec = 0;
     }
     else {
-        hours = sp1 >= sp2
-                ? ((float)sp1 / dist) - ((float)sp2 / dist)
-                : ((float)sp2 / dist) - ((float)sp1 / dist);
+        hours = sp1 <= sp2
+                ? (dist / (float)sp1) - (dist / (float)sp2)
+                : (dist / (float)sp2) - (dist / (float)sp1);
         min = convertUnits(hours);
         sec = convertUnits(min);
     }
@@ -68,7 +68,7 @@ std::string calcTimeDiff(int sp1, int sp2, int dist){
  * convert the float time down by a factor of 60, works for hours and minutes.
  */
 float convertUnits(float convTime) {
-    while (convTime > 1 && convTime > 0) {
+    while (convTime > 1) {
         convTime--;
     }
     return convTime * 60;
