@@ -31,8 +31,8 @@
 *.out
 *.app
 
-# Directories
-cmake-build-debug/
+#
+cmake-build-debug\
 
 # Files
 CMakeLists.txt

@@ -9,16 +9,20 @@ Ethan Edwards, Joe Coon
 #include <fstream>
 #include <iostream>
 
-std::string calcTimeDiff(int sp1, int sp2, int dist);
+using namespace std;
+
+string calcTimeDiff(int sp1, int sp2, int dist);
 float convertUnits(float convTime);
+string timeFixer(string timeRaw);
 
 int main(){
     int speed1 = 1, speed2 = 1, distance = 1;
-    std::fstream inFile("input.txt"), outFile("testout.txt");
-    std::string timeDiff;
+    fstream inFile("tinput.txt"), outFile("tout.txt");
+    string timeDiff;
 
     // File input stuff
     if (inFile.is_open()) {
+        cout << "File is open" << endl;
         while (speed1 + speed2 + distance != 0) {
             inFile >> distance;
             inFile >> speed1;
@@ -26,22 +30,24 @@ int main(){
             inFile.ignore();
             timeDiff = calcTimeDiff(speed1, speed2, distance);
 
+            timeDiff = timeFixer(timeDiff); // Fix time formatting
+
             // Logic for organizing output
-            outFile << timeDiff << std::endl;
-            std::cout << timeDiff << std::endl;
+            outFile << timeDiff << endl;
+            cout << timeDiff << endl;
         }
+        inFile.close();
+        outFile.close();
     }
-    inFile.close();
-    outFile.close();
 }
 
 /*
  * Calculate the difference in time travelled for two different speeds over 1 distance.
  * Returns a string in the form "x.xxxxxxx:x.xxxxxxxx:x.xxxxxxxx".
  */
-std::string calcTimeDiff(int sp1, int sp2, int dist){
+string calcTimeDiff(int sp1, int sp2, int dist){
     float hours, min, sec;
-    std::string result;
+    string result;
 
     if (sp1 == 0 || sp2 == 0) { //return 0 if either speed is 0, avoid NaN output
         hours = min = sec = 0;
@@ -55,11 +61,11 @@ std::string calcTimeDiff(int sp1, int sp2, int dist){
     }
 
     //build string from values
-    result.append(std::to_string(hours));
+    result.append(to_string(hours));
     result.append(":");
-    result.append(std::to_string(min));
+    result.append(to_string(min));
     result.append(":");
-    result.append(std::to_string(sec));
+    result.append(to_string(sec));
 
     return result;
 }
@@ -72,4 +78,19 @@ float convertUnits(float convTime) {
         convTime--;
     }
     return convTime * 60;
+}
+
+/*
+ * Convert from float time to int time, and add leading 0s if necessary
+ */
+string timeFixer(string timeRaw){
+    char sep = ':';
+    string h = timeRaw.substr(0, timeRaw.find('.'));
+    timeRaw.erase(0, timeRaw.find(':') + 1);
+    string m = timeRaw.substr(0, timeRaw.find('.'));
+    if (stoi(m) < 10){m = "0" + m;}
+    timeRaw.erase(0, timeRaw.find(':') + 1);
+    string s = timeRaw.substr(0, timeRaw.find('.'));
+    if (stoi(s) < 10){s = "0" + s;}
+    return h + sep + m + sep + s;
 }
