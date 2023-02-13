@@ -39,11 +39,12 @@ int main(){
         inFile.close();
         outFile.close();
     }
+    return 0;
 }
 
 /*
  * Calculate the difference in time travelled for two different speeds over 1 distance.
- * Returns a string in the form "x.xxxxxxx:x.xxxxxxxx:x.xxxxxxxx".
+ * Returns a string in the form "x.xxxxxxx:x.xxxxxxx:x.xxxxxxx".
  */
 string calcTimeDiff(int sp1, int sp2, int dist){
     float hours, min, sec;
@@ -81,16 +82,21 @@ float convertUnits(float convTime) {
 }
 
 /*
- * Convert from float time to int time, and add leading 0s if necessary
+ * Convert from float time to int time, and add leading 0s if necessary.
+ * timeRaw must be a string formatted with floats in "h:m:s" form.
  */
 string timeFixer(string timeRaw){
+    string h, m, s;
     char sep = ':';
-    string h = timeRaw.substr(0, timeRaw.find('.'));
+
+    h = timeRaw.substr(0, timeRaw.find('.'));
+    if (stoi(h) < 10){h = "0" + h;}
     timeRaw.erase(0, timeRaw.find(':') + 1);
-    string m = timeRaw.substr(0, timeRaw.find('.'));
+    m = timeRaw.substr(0, timeRaw.find('.'));
     if (stoi(m) < 10){m = "0" + m;}
     timeRaw.erase(0, timeRaw.find(':') + 1);
-    string s = timeRaw.substr(0, timeRaw.find('.'));
+    s = timeRaw.substr(0, timeRaw.find('.'));
     if (stoi(s) < 10){s = "0" + s;}
+
     return h + sep + m + sep + s;
 }
