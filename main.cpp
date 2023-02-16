@@ -6,7 +6,6 @@ Ethan Edwards, Joe Coon
  "Speed Can Cost You" Program.
  */
 
-#include <chrono> // https://en.cppreference.com/w/cpp/chrono/hh_mm_ss
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -26,23 +25,22 @@ void initializeFiles(fstream& inFile, fstream& outFile, string& fname, int argc,
 int main(int argc, const char* argv[]){
     int speed1 = 1, speed2 = 1, distance = 1;
     fstream inFile, outFile;
-    string timeDiff, fname;
+    string fname;
 
-    initializeFiles(inFile, outFile, fname, argc, argv);
+    initializeFiles(inFile, outFile, fname, argc, argv); //manage I/O files
 
     if (inFile.is_open()) {
         cout << "Opening " << fname  << "..." << endl;
-        while (speed1 + speed2 + distance != 0) {
+        inFile >> distance;
+        inFile >> speed1;
+        inFile >> speed2;
+        while (speed1 + speed2 + distance != 0) { //until terminal line has been read
+            outFile << calcTimeDiff(speed1, speed2, distance) << endl; //generate a time difference string and output it
+
+            inFile.ignore(); //ignore newline character, then grab values per line
             inFile >> distance;
             inFile >> speed1;
             inFile >> speed2;
-            inFile.ignore();
-
-            if (speed1 + speed2 + distance != 0) {
-                timeDiff = calcTimeDiff(speed1, speed2, distance);
-                timeDiff = timeFormatter(timeDiff); // Fix time formatting
-                outFile << timeDiff << endl;
-            }
         }
         cout << "Finished." << endl;
         inFile.close();
@@ -53,7 +51,7 @@ int main(int argc, const char* argv[]){
 
 /*
  * Calculate the difference in time travelled for two different speeds over 1 distance.
- * Returns a string in the form "x.xxxxxxx:x.xxxxxxx:x.xxxxxxx".
+ * Returns a string in the form hh:mm:ss
  */
 string calcTimeDiff(int sp1, int sp2, int dist){
     float hours, min, sec;
@@ -77,7 +75,7 @@ string calcTimeDiff(int sp1, int sp2, int dist){
     result.append(":");
     result.append(to_string(sec));
 
-    return result;
+    return timeFormatter(result); //pass result formatted to hh:mm:ss
 }
 
 /*
@@ -92,7 +90,7 @@ float convertUnits(float convTime) {
 
 /*
  * Convert from float time to int time, and add leading 0s if necessary.
- * timeRaw must be a string formatted with floats in "h:m:s" form.
+ * timeRaw must be a string formatted with floats in "hh:mm:ss" form.
  */
 string timeFormatter(string timeRaw){
     string h, m, s;
@@ -124,15 +122,29 @@ void initializeFiles(fstream& inFile, fstream& outFile, string& fname, int argc,
         inFile.open(argv[1]);
         outFile.open(argv[2]);
     }
+    else if (argc == 2) {
+        char yesno = '\0';
+        fname = argv[1];
+        cout << "Found " << fname << " for input file. Continue using " << fname << " for input? (y/n) ";
+        cin >> yesno;
+        if (yesno == 'n') {
+            fname.clear();
+            cout << "Enter the new input filename: ";
+            cin >> fname;
+        }
+        inFile.open(fname);
+    }
     while (!outFile.is_open()) {
+        fname.clear();
         cout << "Please provide an existing filename to overwrite, or a new filename to create: ";
         cin >> fname;
         outFile = fstream(fname, ios::out); /*invoking the fstream constructor will create a new file
                                               if one does not already exist.*/
-        fname.clear();
     }
-    while (!inFile.is_open()) {
-        cout << "No input file was found. Please provide a relative path and filename for an input file: ";
+    while (!inFile.is_open() && fname != "##") {
+        fname.clear();
+        cout << "No input file was found. Please provide a relative path and filename for an input file "
+             << "(enter ## to close the program): ";
         cin >> fname;
         inFile.open(fname);
     }
